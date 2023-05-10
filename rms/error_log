@@ -1,0 +1,47 @@
+[17-May-2022 12:55:46 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Changepass has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/changepass.php on line 2
+[06-Dec-2022 05:51:11 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[16-Dec-2022 10:11:11 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[19-Dec-2022 06:20:44 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[21-Dec-2022 12:13:34 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[21-Dec-2022 12:14:35 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[21-Dec-2022 12:16:14 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Visatype has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/visatype.php on line 2
+[23-Dec-2022 06:06:16 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[29-Dec-2022 04:51:51 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Changepass has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/changepass.php on line 2
+[18-Jan-2023 06:56:02 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[18-Jan-2023 08:56:51 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Courses has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/courses.php on line 2
+[18-Jan-2023 09:37:16 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[18-Jan-2023 10:47:47 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/downloadprofile.php on line 513
+[18-Jan-2023 11:50:38 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home1/logisae/public_html/rms/application/controllers/downloadprofile.php on line 981
+[18-Jan-2023 11:50:44 UTC] PHP Fatal error:  Cannot redeclare Downloadprofilemodel::cur_job_status_list() in /home1/logisae/public_html/rms/application/models/downloadprofilemodel.php on line 561
+[18-Jan-2023 11:50:47 UTC] PHP Fatal error:  Cannot redeclare Downloadprofilemodel::cur_job_status_list() in /home1/logisae/public_html/rms/application/models/downloadprofilemodel.php on line 561
+[18-Jan-2023 11:50:49 UTC] PHP Fatal error:  Cannot redeclare Downloadprofilemodel::cur_job_status_list() in /home1/logisae/public_html/rms/application/models/downloadprofilemodel.php on line 561
+[18-Jan-2023 11:51:54 UTC] PHP Fatal error:  Uncaught Error: Class 'Downloadprofilemodel' not found in /home1/logisae/public_html/rms/system/core/Loader.php:304
+Stack trace:
+#0 /home1/logisae/public_html/rms/application/controllers/downloadprofile.php(31): CI_Loader->model('Downloadprofile...')
+#1 /home1/logisae/public_html/rms/system/core/CodeIgniter.php(360): Downloadprofile->index()
+#2 /home1/logisae/public_html/rms/index.php(202): require_once('/home1/logisae/...')
+#3 {main}
+  thrown in /home1/logisae/public_html/rms/system/core/Loader.php on line 304
+[19-Jan-2023 03:52:10 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Visatype has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/visatype.php on line 2
+[22-Jan-2023 07:32:34 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home1/logisae/public_html/rms/application/models/downloadprofilemodel.php on line 2311
+[22-Jan-2023 13:13:53 UTC] PHP Fatal error:  Uncaught Error: Call to a member function insert_files() on null in /home1/logisae/public_html/rms/application/controllers/candidates_all.php:1254
+Stack trace:
+#0 /home1/logisae/public_html/rms/system/core/CodeIgniter.php(360): Candidates_all->addCandidate()
+#1 /home1/logisae/public_html/rms/index.php(202): require_once('/home1/logisae/...')
+#2 {main}
+  thrown in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 1254
+[22-Jan-2023 13:16:09 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 4032
+[23-Jan-2023 01:02:05 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 4032
+[23-Jan-2023 01:06:45 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 2823
+[23-Jan-2023 03:05:12 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ']' in /home1/logisae/public_html/rms/application/controllers/downloadprofile.php on line 2830
+[28-Jan-2023 05:20:12 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[31-Jan-2023 04:31:09 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ';' in /home1/logisae/public_html/rms/application/models/candidateallmodel.php on line 2309
+[31-Jan-2023 06:10:00 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 4467
+[31-Jan-2023 07:30:19 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/candidates_all.php on line 4469
+[06-Feb-2023 06:10:49 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Tasks has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/tasks.php on line 2
+[02-Mar-2023 08:38:07 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[18-Mar-2023 06:34:59 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[21-Mar-2023 07:11:20 UTC] PHP Parse error:  syntax error, unexpected end of file in /home1/logisae/public_html/rms/application/controllers/downloadprofile.php on line 2296
+[21-Mar-2023 07:11:22 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting ')' in /home1/logisae/public_html/rms/application/controllers/downloadprofile.php on line 5503
+[23-Mar-2023 09:31:36 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; offerletters has a deprecated constructor in /home1/logisae/public_html/rms/application/controllers/offerletters.php on line 2
+[03-May-2023 17:23:49 UTC] PHP Deprecated:  Methods with the same name as their class will not be constructors in a future version of PHP; Changepass has a deprecated constructor in /home1/acountz/public_html/rms/application/controllers/changepass.php on line 2

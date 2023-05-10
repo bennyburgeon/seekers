@@ -1,0 +1,165 @@
+<?php 
+class Attend_model extends CI_Model {
+	
+	var $table_name='';
+	var $insert_id='';
+	
+    function __construct()
+    {
+		$this->table_name='pms_admin_attend';
+    }
+	
+	function insert_record()
+    {
+		
+		$data=array(
+		'admin_id'=> $this->input->post('name'),
+		'date'=> $this->input->post('date'),
+		'time_in'=> $this->input->post('time_in'),
+		'time_out'=> $this->input->post('time_out'),
+		'approved_by'=> 0
+		);
+	
+        $this->db->insert($this->table_name, $data);		
+		$id=$this->db->insert_id();
+	
+		
+		return $this->db->insert_id();
+    }
+	
+	function update_record()
+	{
+		
+		$data=array(
+		'admin_id'=> $this->input->post('name'),
+		'date'=> $this->input->post('date'),
+		'time_in'=> $this->input->post('time_in'),
+		'time_out'=> $this->input->post('time_out'),
+		'approved_by'=> $_SESSION['vendor_session']
+		);
+ //~ print_r($data);die;
+       $this->db->where('atten_id', $this->input->post('atten_id'));
+	   $this->db->update('pms_admin_attend', $data);	  		
+	   //~ $this->load->library('upload');	
+	}
+	
+	function delete($id=null)
+	{
+		if($id=='') return false;		
+		$this->db->where('atten_id', $id);
+		$this->db->delete('pms_admin_attend');		
+	}
+	
+	function delete_multiple_record($id_arr)
+    {
+		foreach ($id_arr as $id) {
+			
+			$this->db->where('atten_id',$id);
+			$this->db->delete($this->table_name);
+		}	
+    }
+	function is_related($id)
+	{
+		$master_tables = array(array('table'=>'pms_state','key' => 'branch_id','Module'=>'Branch'));
+		$is_related = FALSE;
+		foreach($master_tables as $table){
+			$query=$this->db->query("select * from ".$table['table']." where ".$table['key']."=".$id);
+			$num_rows = (int) $query->num_rows();
+			if($num_rows){
+				$is_related = TRUE;
+				$_SESSION['related_module'] = $table['Module'];
+				break;
+			}
+		}
+		return $is_related;
+	}
+
+	
+	function check_dups($name='',$id='')
+	{
+		$this->db->query('branch_name', $name);
+		if($id!='')	$this->db->where('branch_id !=', $id);		
+		$query = $this->db->get('pms_branch_description');
+		if ($query->num_rows() == 0)
+			return true;
+		else{
+			return false;
+		}
+	}
+	
+	function record_count($searchterm) 
+	{
+		$a=$_SESSION['vendor_session'];
+	
+		//~ $sql	= "select count(*)as atten_id from ".$this->table_name." a join pms_admin_users b";
+		$sql	= "select count(*)as atten_id from ".$this->table_name." a join pms_admin_users b where a.admin_id=$a";
+		$cond	= '';
+		
+		if($searchterm!='')
+		{
+			if($cond!=''){
+			//$cond.=" and connum=".$connum;
+			}
+			else{
+				$sql	= "select count(*)as atten_id from ".$this->table_name." a join pms_admin_users b";
+				$cond =" a.date like '%" . $searchterm . "%' and b.admin_id=a.admin_id";
+			}	
+		} 
+		
+		if($cond!='') $cond=' where '.$cond;
+		$sql=$sql.$cond;
+		//echo $sql;
+		$query = $this->db->query($sql);
+		$row=$query->row_array();
+		return $row['atten_id'];
+				
+		
+	}
+	function get_list($start,$limit,$searchterm,$sort_by)
+    {
+		
+		
+		$a=$_SESSION['vendor_session'];
+		//~ $sql="select a.*, b.firstname, b.lastname, (select pms_admin_users.firstname from pms_admin_users, pms_admin_attend where pms_admin_users.admin_id = pms_admin_attend.approved_by) as fname from ".$this->table_name." a join pms_admin_users b where a.admin_id = b.admin_id";
+		 $sql="select a.*, b.firstname, b.lastname from ".$this->table_name." a join pms_admin_users b where a.admin_id = b.admin_id and a.admin_id=$a";
+		$cond='';
+		
+		
+		if($searchterm!='')
+		{
+			if($cond!=''){
+				//$cond=" b.admin_id=a.admin_id";
+			}	
+			else{
+				//~ $cond=" branch_name like '%" . $searchterm . "%'";
+				//~ $sql="select a.*, b.firstname, b.lastname, (select pms_admin_users.firstname from pms_admin_users, pms_admin_attend where pms_admin_users.admin_id = pms_admin_attend.approved_by) as fname from ".$this->table_name." a join pms_admin_users b";
+				$sql="select a.*, b.firstname, b.lastname from ".$this->table_name." a join pms_admin_users b";
+				$cond=" a.date like '%" . $searchterm . "%' and b.admin_id=a.admin_id ";
+			}		
+		} 
+		
+		if($cond!='') $cond=' where '.$cond;
+		$sql=$sql.$cond;
+		
+		$sql.=" order by date ".$sort_by." limit ".$start.",".$limit;
+		 //~ echo $sql;
+		$query = $this->db->query($sql);
+		return $query->result_array();
+		
+    }
+	
+	function get_all_admins()
+	{
+		$row=$this->db->get('pms_admin_users');
+		if($row->num_rows()>0)
+		{
+			foreach($row->result() as $q)
+		{
+			$data[]=$q;
+			}
+		}
+		//~ print_r($data);die;
+		return $data;
+	}
+}
+?>

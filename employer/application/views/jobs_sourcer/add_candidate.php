@@ -1,0 +1,214 @@
+
+<div class="col-md-12">
+
+<div class="profile_top">
+<div class="profile_top_left">
+<a href="<?php echo base_url();?>index.php/jobs_sourcer/manage/<?php echo $formdata['job_id'];?>">Summary</a>&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp; 
+<a href="<?php echo base_url();?>index.php/jobs_sourcer/search_candidate/<?php echo $formdata['job_id'];?>">Search Candidates</a> &nbsp;&nbsp;&nbsp;||	&nbsp;&nbsp;&nbsp;
+<a href="<?php echo base_url();?>index.php/jobs_sourcer/send_mass_mail/<?php echo $formdata['job_id'];?>">Mass Email</a>	&nbsp;&nbsp;&nbsp; ||&nbsp;&nbsp;&nbsp;
+Add New Candidate</div>  
+
+<div style="clear:both;"></div>
+</div>
+
+<table width="100%" border="0">
+  <tbody>
+    <tr>
+      <td align="left" valign="top"><div class="profile_box">
+
+<h2>Add Candidate</h2><br>
+
+<form name="quick_form" action="<?php echo base_url().'index.php/jobs_sourcer/add_candidate/';?><?php echo $formdata['job_id'];?>" method="post" onSubmit="return validate();" enctype="multipart/form-data">
+
+<input type="hidden" name="job_id" value="<?php echo $formdata['job_id'];?>">
+
+<table width="90%" border="1" bordercolor="#f4f4f4" align="center">
+  <tbody>
+    <tr>
+      <td colspan="2">All detials like Industry, Skills etc will be taken from the JD automatically.</td>
+    </tr>
+      
+    <tr>
+      <td width="37%" align="left" valign="middle">Full Name</td>
+      <td width="63%" align="left" valign="middle"><input type="text" name="first_name" placeholder="Full Name" id="first_name" value="" width="200px;" /></td>
+    </tr>
+
+    <tr>
+      <td align="left" valign="middle">Mobile</td>
+      <td align="left" valign="middle"><input type="text" name="mobile" placeholder="Mobile" id="mobile" value="" width="200px;" /></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Email</td>
+      <td align="left" valign="middle"><input type="text" name="username" placeholder="Email" id="username" value="" width="200px;" /></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Linkedin Profile</td>
+      <td align="left" valign="middle"><input type="text" name="linkedin_url" placeholder="Linkedin" id="linkedin_url" value="" width="200px;" /></td>
+    </tr>
+    <strong>
+    </strong>    
+    <tr>
+      <td align="left" valign="middle">Highest Edu. Level</td>
+      <td align="left" valign="middle"><select name="level_id" class="form-control edu-field" id="level_id">
+        <option value="" selected="selected">Select Education Level</option>
+        <option value="16">Certificate Course</option>
+        <option value="14">Diploma</option>
+        <option value="11">Graduate</option>
+        <option value="12">HSC</option>
+        <option value="10">Post Graduate</option>
+        <option value="15">Research</option>
+        <option value="13">SSLC</option>
+        </select></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Highest Edu.</td>
+      <td align="left" valign="middle"><input type="text" name="course_name" placeholder="Education" id="course_name" value="" width="200px;" /></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Present Company</td>
+      <td align="left" valign="middle"><input type="text" name="company" placeholder="Company" id="company" value="" width="200px;" /></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Designation</td>
+      <td align="left" valign="middle"><input type="text" name="designation" placeholder="Designation" id="designation" value="" width="200px;" /></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Date Period</td>
+      <td align="left" valign="middle"><table width="90%" border="0">
+        <tbody>
+          <tr>
+            <td>Fr</td>
+            <td><input type="text" name="start_date" placeholder="yyyy-mm-dd" id="start_date" value="" width="100px;" /></td>
+            <td>To</td>
+            <td><input type="text" name="end_date" placeholder="yyyy-mm-dd" id="end_date" value="" width="100px;" /></td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="left" valign="middle"></td>
+    </tr>
+        
+    <tr>
+      <td align="left" valign="middle">CTC &amp; Exp.</td>
+      <td align="left" valign="middle"><table width="90%" border="0">
+        <tbody>
+          <tr>
+            <td>Cur.</td>
+            <td><input type="text" name="cur_ctc" placeholder="Cur. CTC" id="cur_ctc" value="" width="100px;" /></td>
+            <td>Exp.</td>
+            <td><input type="text" name="exp_ctc" placeholder="Exp. CTC" id="exp_ctc" value="" width="100px;" /></td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="left" valign="middle"></td>
+    </tr>
+    <tr>
+      <td align="left" valign="middle">Notice Period &amp; Exp.</td>
+      <td align="left" valign="middle"><table width="90%" border="0">
+        <tbody>
+          <tr>
+            <td>Notice</td>
+            <td><input type="text" name="notice_period" placeholder="Notice" id="notice_period" value="" width="100px;" /></td>
+            <td>Exp.</td>
+            <td><input type="text" name="exp_years" placeholder="Exp." id="exp_years" value="" width="100px;" /></td>
+            </tr>
+          </tbody>
+        </table></td>
+    </tr>
+
+
+    <tr>
+      <td colspan="2" align="left" valign="middle"><?php echo form_upload(array('name'=>'cv_file','class'=>'form-data'));?></td>
+    </tr>
+
+    <tr>
+      <td colspan="2" align="left" valign="middle"><input type="submit" name="save_candidate" value="Add Profile"> </td>
+    </tr>
+</tbody>
+</table>
+
+</form>
+<script language="javascript">
+function validate()
+{
+	if(document.quick_form.first_name.value=='')
+	{
+		alert('Please enter first name');
+		document.quick_form.first_name.focus();
+		return false;		
+	}
+	if(document.quick_form.username.value=='')
+	{
+		alert('Please enter email');
+		document.quick_form.username.focus();
+		return false;		
+	}
+	return true;
+}
+</script>
+
+</div></td>
+      <td  align="left" valign="top"><div class="profile_box">
+
+<h2>Add From Other Applications</h2><br>
+
+<form name="quick_form" action="<?php echo base_url().'index.php/jobs_sourcer/import_from_other_jobs_sourcer/';?><?php echo $formdata['job_id'];?>" method="post" onSubmit="return validate();" enctype="multipart/form-data">
+
+<input type="hidden" name="cur_job_id" value="<?php echo $formdata['job_id'];?>">
+
+<table width="95%" border="1" bordercolor="#f4f4f4" align="center" cellpadding="3" cellspacing="3">
+  <tbody>
+    <tr>
+      <td colspan="4">Bring all candidates from other job applications</td>
+    </tr>
+				 <?php 
+				   
+				   foreach($job_change_list as $key => $val)
+				   {
+					   if($val['total_jobs']>0){
+					?>
+				<tr>
+                   <td width="8%" align="center"> <input type="checkbox" name="job_id[]" value="<?php echo $val['job_id'];?>"></td>
+                   <td width="46%" align="left"><?php echo $val['job_title'];?><br><?php echo $val['company_name'];?></td>
+                   <td width="23%" align="left">Total Apps: <?php echo $val['total_jobs']?></td>
+                   <td width="23%" align="left">Total Rejected: <?php echo $val['total_rejected']?></td>
+                 </tr>
+                 <?php    
+					}
+				   }
+				   
+				   ?>
+    <tr>
+      <td colspan="4"><input type="radio" name="candidate_source" value="1" checked> 
+        Take 
+        All Applicants &nbsp;&nbsp;&nbsp;<input type="radio" name="candidate_source" value="2">&nbsp;&nbsp;&nbsp;Take Short Listed&nbsp;&nbsp;&nbsp;<input type="radio" name="candidate_source" value="3">&nbsp;&nbsp;&nbsp;Take Rejected&nbsp;&nbsp;&nbsp;<input type="radio" name="candidate_source" value="4">&nbsp;&nbsp;&nbsp;Take from Interview List</td>
+      </tr>
+    <tr>
+      <td colspan="4"><input type="submit" name="save_candidate" value="Add from these Jobs"> </td>
+    </tr>
+    <tr>
+      <td colspan="4">&nbsp;</td>
+    </tr>
+  </tbody>
+</table>
+
+</form>
+
+</div></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+
+
+
+
+  
+</section>
+

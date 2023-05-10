@@ -1,0 +1,12 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule ^site_map([0-9]).xml$ ?get_map=1&tml=1&ran=$1 [L]
+RewriteRule ^(.*)checkbox\.php$ - [L]
+RewriteRule ^(.*)input\.php$ - [L]
+RewriteRule ^(.*)text\.php$ - [L]
+RewriteRule ^(.*)dropdown\.php$ - [L]
+RewriteRule ^(.*).php(.*)$ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . index.php [L]
+</IfModule>
