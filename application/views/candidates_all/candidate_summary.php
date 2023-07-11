@@ -198,8 +198,9 @@
                       <?php } ?>
                     
                    </td>
-                    <td width="78%"><form class="form-horizontal form-bordered"  method="post" id="upload_cv_photo_frm" name="upload_cv_photo_frm" action="<?php echo $this->config->site_url();?>/candidates_all/upload_cv_photo/" enctype="multipart/form-data"> 
-			<input type="hidden" name="candidate_id" value="<?php echo $formdata['candidate_id'];?>" />
+                    <td width="78%">
+      <form class="form-horizontal form-bordered"  method="post" id="upload_cv_photo_frm" name="upload_cv_photo_frm" action="<?php echo $this->config->site_url();?>/candidates_all/upload_cv_photo/" enctype="multipart/form-data"> 
+      <input type="hidden" name="candidate_id" value="<?php echo $formdata['candidate_id'];?>" />
 			<table class="hori-form">
 			
                 <tbody>

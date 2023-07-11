@@ -137,12 +137,11 @@ table, td, tr {
 <div class="section-wrap">
 <table width="100%" border="0" cellpadding="4" cellspacing="4">
   <tr>
-    <td><img src="<?php echo base_url(); ?>images/logo-seekers.png" /></td>
-    <td align="right"><?php echo $this->config->item('company_name');?> <br />
-     <?php echo $this->config->item('powered_by_address');?> <br />
-       <?php echo $this->config->item('powered_by_phone');?> <br />
-      <?php echo $this->config->item('powered_by_email');?> <br />
-      <?php echo $this->config->item('powered_by_web');?> </td>
+  <td><img style="width: 10%;" src="<?php echo base_url(); ?>images/logo-seekers.png" /></td>
+    <td align="right">
+    <a href="<?php echo base_url(); ?>index.php/select_applicant/download_profile/?candidate_id=<?php echo md5($candidate_id);?>&job_app_id=<?php echo $job_app_id;?>"
+     target="_blank" title="Download" style="width: 58%;" class="btn btn-info btn-xs"> Download </a>
+  </td>
   <tr> </tr>
     </tr>
   
@@ -158,9 +157,29 @@ table, td, tr {
 		<?php echo form_hidden('job_app_id', $job_app_id);?>
       
       <div class="container">
-        <h3 class="name"><?php echo $personal['first_name'];?> &nbsp;<?php echo $personal['last_name'];?></h3>
+      <table width="100%" border="0">
+        <tbody>
+          <tr>
+<td>
+<h3 class="name"><?php echo $personal['first_name'];?> &nbsp;<?php echo $personal['last_name'];?></h3>
        <h4><?php echo $job_details['job_title'];?></h4>
-        <div class="line"></div>
+        
+</td>
+<td>
+<?php if(file_exists($this->config->item('photo_physical_url').$personal['photo']) && $personal['photo']!=''){?>
+		
+    <img class="picbox pull-right" src="<?php echo $this->config->item('photo_url').$personal['photo']; ?>" width="130" height="156" alt=""/>
+    
+    <?php }else{ ?>
+
+    <img class="picbox pull-right" src="<?php echo $this->config->item('photo_url')?>no_photo.png" width="130" height="156" alt=""/>
+    
+    <?php } ?>
+</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="line"></div>
       </div>
     
   </div>
@@ -174,17 +193,7 @@ table, td, tr {
         <td width="15%" class="label_values" >Current Salary</td>
         <td width="14%"><?php echo  $this->config->item('currency_symbol');?>
         <?php if(isset($job_search['current_ctc'])) echo number_format((float)$job_search['current_ctc'],2);else echo '0.00';?></td>
-        <td width="25%" rowspan="8">
-        <?php if(file_exists($this->config->item('photo_physical_url').$personal['photo']) && $personal['photo']!=''){?>
-		
-        <img class="picbox pull-right" src="<?php echo $this->config->item('photo_url').$personal['photo']; ?>" width="130" height="156" alt=""/>
         
-        <?php }else{ ?>
-		
-        <img class="picbox pull-right" src="<?php echo $this->config->item('photo_url')?>no_photo.png" width="130" height="156" alt=""/>
-        
-        <?php } ?>
-        </td>
       </tr>
       <tr>
         <td class="label_values" ><strong>Gender</strong></td>

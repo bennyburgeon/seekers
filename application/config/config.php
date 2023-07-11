@@ -32,11 +32,11 @@ session_start();
 
 
 
-$config['base_url']	= 'https://acountz.com/';
+$config['base_url']	= 'http://localhost/seekers/';
 
-$config['employer_url']	= 'https://acountz.com//employer/';
+$config['employer_url']	= 'http://localhost/seekers/employer/';
 
-$config['site_url']	= 'https://acountz.com/';
+$config['site_url']	= 'http://localhost/seekers/';
 
 
 
@@ -44,15 +44,15 @@ $config['photo_physical_url']	= 'rms/uploads/photos/';
 
 
 
-$config['photo_url']	= 'https://acountz.com/rms/uploads/photos/';
+$config['photo_url']	= 'http://localhost/seekers/rms/uploads/photos/';
 
 
 
-$config['logo_url']='https://acountz.com/images/logo.png';
+$config['logo_url']='http://localhost/seekers/images/logo.png';
 
 
 
-$config['base_email_url']='https://acountz.com/join/jobs.php/select_applicant/';
+$config['base_email_url']='http://localhost/seekers/join/jobs.php/select_applicant/';
 
 $config['feedback_controller']='client_feedback/';
 

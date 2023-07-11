@@ -510,15 +510,16 @@ function select_aplication_visa($candidate_id)
 	{//edit profile
 		$this->db->where('candidate_id',$candidate_id);
 		$this->db->update($this->table_name,$data_profile);
-
-		$query = $this->db->query('SELECT * from pms_candidate_job_search where candidate_id='.$candidate_id);
-		if($query->num_rows()>0)
-		{
-			$this->db->where('candidate_id', $candidate_id);
-			$this->db->update('pms_candidate_job_search', $data_job);
-		}else
-		{
-			$this->db->insert('pms_candidate_job_search', $data_job);				
+		if(!empty($data_job)){
+				$query = $this->db->query('SELECT * from pms_candidate_job_search where candidate_id='.$candidate_id);
+				if($query->num_rows()>0)
+				{
+					$this->db->where('candidate_id', $candidate_id);
+					$this->db->update('pms_candidate_job_search', $data_job);
+				}else
+				{
+					$this->db->insert('pms_candidate_job_search', $data_job);				
+				}
 		}
 	}
 	

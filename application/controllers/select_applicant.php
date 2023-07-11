@@ -5,7 +5,12 @@ class Select_applicant extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->model('clientcvmodel'); 
+		$this->load->helper('url');
+		$this->load->helper('file');
+		$this->load->helper('download');
+		$this->load->library('pdf');
 	}
+	
 	
 	function index($offset = 0)
 	{		
@@ -75,6 +80,7 @@ class Select_applicant extends CI_Controller {
 			
 			$this->data['job_details']              = $this->clientcvmodel->get_job_details_rms($this->data['candidate_id'],$job_app_id);
 			
+
 			$this->data['page_head']                = 'Candidate Profile';
 			$this->data["personal"]                 = $this->clientcvmodel->get_single_record($this->data['candidate_id']);
 			$this->data["job_search"]               = $this->clientcvmodel->job_search($this->data['candidate_id']);
@@ -93,6 +99,46 @@ class Select_applicant extends CI_Controller {
 			exit();
 		}		
 	}
+
+	function download_profile($paper = 'a4', $orientation = 'portrait') {
+		
+		if($this->input->get('candidate_id')!='' && $this->input->get('job_app_id')!=''){	
+			$candidate_id           =  $this->input->get('candidate_id');
+			$job_app_id             =  $this->input->get('job_app_id');
+			$details_row    = $this->clientcvmodel->get_profile_rms($candidate_id);
+			if($details_row['candidate_id']<1)exit();
+			$this->data['candidate_id']   =$details_row['candidate_id'];
+			$this->data['short_id']       ='0';
+			$this->data['job_app_id']               = $job_app_id;
+			$this->data['job_details']              = $this->clientcvmodel->get_job_details_rms($this->data['candidate_id'],$job_app_id);
+			$this->data['page_head']                = 'Candidate Profile';
+			$this->data["personal"]                 = $this->clientcvmodel->get_single_record($this->data['candidate_id']);
+			$this->data["job_search"]               = $this->clientcvmodel->job_search($this->data['candidate_id']);
+			$this->data['education']                = $this->clientcvmodel->education_list($this->data['candidate_id']);
+			$this->data['profession']               = $this->clientcvmodel->get_profession($this->data['candidate_id']);
+			$this->data['language_skills']          = $this->clientcvmodel->candidate_languages($this->data['candidate_id']);
+			$this->data['tech_skills']              = $this->clientcvmodel->candidate_skills($this->data['candidate_id']);
+			$this->data['certification']            = $this->clientcvmodel->candidate_certifications($this->data['candidate_id']);
+			$this->data['domain']                   = $this->clientcvmodel->candidate_domains($this->data['candidate_id']);
+			$this->data['consultant_feedback']      = $this->clientcvmodel->get_consultant_feedback($this->data['candidate_id']);			
+			$this->data["profile_list"]             = $this->clientcvmodel->profile_list($this->data['candidate_id']);
+			
+			
+			$this->pdf->folder('assets/pdf/');
+			$filename = $paper.'-'.$orientation.'.pdf';
+			$this->pdf->filename($filename);
+			$this->pdf->paper($paper, $orientation);
+			$this->pdf->html($this->load->view('candidates_all/download_cv_rms',$this->data, true));
+			if($this->pdf->create('download')) {
+				redirect();
+			}	
+
+		}else{
+			exit();
+		}
+	}
+
+	
 	
 			
 	function client_feedback()

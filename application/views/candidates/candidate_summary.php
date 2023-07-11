@@ -90,7 +90,7 @@ width: auto;
 <?php if($this->input->get('upd')==1){?>  
 
 <div class="alert alert-success">
-				<button class="close" data-dismiss="alert">×</button>
+				<button class="close" data-dismiss="alert">ï¿½</button>
 				<strong>Success!</strong> Contract details updated successfully.
 </div>
 <?php } ?> 

@@ -213,6 +213,7 @@
 	// upload files from summary page.
 	function upload_cv_photo()
 	{
+		
 		$this->table_name='pms_candidate';
 		$this->load->model('candidateallmodel');
 		$this->load->library('upload');
@@ -222,6 +223,7 @@
 		if($candidate_id!='')
 		{
 			if(isset($_FILES['cv_file'])){
+				
 				if (is_uploaded_file($_FILES['cv_file']['tmp_name'])) 
 				{       				
 					$config['upload_path'] = $this->config->item('cv_upload_folder');
@@ -229,7 +231,7 @@
 					$config['max_size']	= '0';
 					$config['file_name'] = md5(uniqid(mt_rand()));
 					$this->upload->initialize($config);	
-				
+					
 					if ($this->upload->do_upload('cv_file'))
 					{
 						$this->upload_file_name='';
@@ -241,6 +243,7 @@
 							'file_type'=> $this->upload_file_name,
 							'candidate_id' => $candidate_id
 						);
+						exit($dataArr);
 						$this->candidateallmodel->insert_files($dataArr);
 					}
 				}
@@ -248,17 +251,19 @@
 			
 			if(isset($_FILES['photo']))
 			{	
+				
 				if (is_uploaded_file($_FILES['photo']['tmp_name'])) 
-				{         
+				{        
 					$photo['upload_path'] = $this->config->item('photo_upload_folder');
 					
 					$photo['allowed_types'] = 'png|jpg|jpeg|gif';
 					$photo['max_size']	= '0';
 					$photo['file_name'] = md5(uniqid(mt_rand()));
-				
+					$this->load->library('upload');
 					$this->upload->initialize($photo);
+
 					if ($this->upload->do_upload('photo'))
-					{
+					{ 
 					
 						$this->upload_file_name='';
 						$data =  $this->upload->data();	
@@ -270,7 +275,11 @@
 							'candidate_id' => $candidate_id
 						);
 						$this->candidateallmodel->insert_files($dataArr);
+					}else{
+						$error = array('error' => $this->upload->display_errors());
+						print_r($error); 
 					}
+					
 				}
 			}	
 			redirect('candidates_all/summary/');
@@ -482,6 +491,109 @@
 		}
 	}
 
+	/////////////////
+	function update_personal_profile()
+	{
+	
+		if( $this->input->post('candidate_id')!='')
+		{
+			$this->load->model('candidateallmodel');
+			$age=$this->input->post('age');
+			$candidate_id = $this->input->post('candidate_id');
+
+		 	if($this->input->post('date_of_birth')!='') $age = $this->get_age($this->input->post('date_of_birth'));
+			
+			$data_profile =array(
+				'first_name'         => $this->input->post('first_name'),
+				//'last_name'          => $this->input->post('last_name'),
+				'gender'             => $this->input->post('gender') ,
+				'marital_status'     => $this->input->post('marital_status'),
+
+				'mobile'                => $this->input->post('mobile'),
+				'mobile_prefix'         => $this->input->post('mobile_prefix'),				
+				
+				'mobile1'                =>  $this->input->post('mobile1'),
+				'mobile_prefix1'         => $this->input->post('mobile_prefix1'),	
+				'alternate_email'         => $this->input->post('alternate_email'),		
+						
+				'age'                => $age,
+				'date_of_birth'      => $this->input->post('date_of_birth'),	
+				'passportno'         => $this->input->post('passportno'),
+				'nationality'       => $this->input->post('nationality'),
+				'city_id'           => $this->input->post('city_id'),
+				//'fee_comments'           => $this->input->post('fee_comments'),
+				//'skills'           => $this->input->post('skills'),
+				  
+			);
+			
+			if($this->input->post('password')!='')$data_profile['password']= md5($this->input->post('password'));
+			
+			$data_job = array();
+			$this->candidateallmodel->update_candidate_record($candidate_id,$data_profile,$data_job);
+			redirect('candidates_all/summary/?upd=1');
+		}else
+		{
+			echo 'Invalid Data';
+			exit();
+		}
+	}
+	function update_professional_profile()
+	{
+	
+		if( $this->input->post('candidate_id')!='')
+		{
+			$this->load->model('candidateallmodel');
+			$age=$this->input->post('age');
+			$candidate_id = $this->input->post('candidate_id');
+			if($this->input->post('driving_license')==1){
+				$country=$this->input->post('driving_license_country');
+			}else{
+				$country=0;
+			}
+			$data_profile =array(
+				'visa_type_id'       => $this->input->post('visa_type_id'),
+				'driving_license'          => $this->input->post('driving_license'),
+				'driving_license_country'  => $country,	
+				'linkedin_url'	        => $this->input->post('linkedin_url'),
+				'cur_job_status'       => $this->input->post('cur_job_status'), 
+				  
+			);
+			$data_job = array(
+					'candidate_id' => $candidate_id,
+					'current_ctc' => $this->input->post('current_ctc'),
+					'expected_ctc' => $this->input->post('expected_ctc'),
+					'notice_period' => $this->input->post('notice_period'),
+					'total_experience' => $this->input->post('total_experience'),
+					'reason_to_leave'        => $this->input->post('reason_to_leave'),
+			);
+			$this->candidateallmodel->update_candidate_record($candidate_id,$data_profile,$data_job);
+			redirect('candidates_all/summary/?upd=1');
+		}else
+		{
+			echo 'Invalid Data';
+			exit();
+		}
+	}
+	function update_otherdetails()
+	{
+	
+		if( $this->input->post('candidate_id')!='')
+		{
+			$this->load->model('candidateallmodel');
+			$candidate_id = $this->input->post('candidate_id');
+			$data_profile =array(
+				'fee_comments'           => $this->input->post('fee_comments'), 
+			);
+			
+			$data_job = array();
+			$this->candidateallmodel->update_candidate_record($candidate_id,$data_profile,$data_job);
+			redirect('candidates_all/summary/?upd=1');
+		}else
+		{
+			echo 'Invalid Data';
+			exit();
+		}
+	}
 	function get_age($birthday){ 
 		$age = strtotime($birthday);
 		
@@ -622,6 +734,7 @@
 						'level_id'     => $this->input->post('level_id'),
 						'course_id'    => $this->input->post('course_id'),
 						'spcl_id'      => $this->input->post('spcl_id'),
+						'univ_id'      =>$this->input->post('univ_id'),
 						'univ_name'      => $this->input->post('univ_name'),
 						'edu_year'     => $this->input->post('edu_year'),
 						'edu_country'  => $this->input->post('edu_country'),
@@ -1015,6 +1128,7 @@
 	// Manage Summary & Reports
 	function summary()
 	{
+		
 		$candidate_id=$_SESSION['candidate_session'];
 
 		$this->data['registation_msg']='';
@@ -1305,9 +1419,9 @@
 		$this->data['desig_list']	=	$desig_list;
 		$this->data['desig_name']	=	$designation;				
 		
-/*-----------------------------------------------------------------*/
+		/*-----------------------------------------------------------------*/
 		
-//primary_skills
+		//primary_skills
 		$candidate_skills_primary = $this->candidateallmodel->candidate_skills_primary($candidate_id);
 		
 		$skills_primary=array();
@@ -1320,7 +1434,7 @@
 		$this->data['skills_primary']	        =	$candidate_skills_primary;
 	
 
-//secondary skills
+			//secondary skills
 		$candidate_skills_secondary = $this->candidateallmodel->candidate_skills_secondary($candidate_id);
 		
 		$skills_secondary=array();
@@ -1336,7 +1450,7 @@
 		//$this->data['lang_details'] = $this->candidateallmodel->get_lang_details($candidate_id);
 		
 
-/*--------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------*/
 		
 		if($this->input->post('candidate_id')!=''){
 				foreach($this->input->post('candidate_id') as $key => $val)
@@ -1357,13 +1471,371 @@
 				}
 			redirect('candidates_all/summary/');
 		}
+		
+		$this->load->view("candidate-profile/header",$this->data);
+		$this->load->view("candidate-profile/include/sidebar",$this->data);
+		$this->load->view("candidate-profile/include/head",$this->data);
+		$this->load->view("candidate-profile/dashboard",$this->data);
+		$this->load->view("candidate-profile/footer",$this->data);
+		//print_r($this->data["formdata"]);
+		//exit();
+		// $this->load->view("include/header",$this->data);
+		// $this->load->view("candidates_all/candidate_summary",$this->data);
+		// $this->load->view("include/footer",$this->data);
+	}
+	function summary1()
+	{
+		
+		$candidate_id=$_SESSION['candidate_session'];
+
+		$this->data['registation_msg']='';
+		$this->data['applied_msg']='';
+		
+		if($this->input->get('registation')!='')
+		{
+			$this->data['registation_msg']='You have registered successfully. Please update your education and work history. You can add any number of details here.';
+		}
+		
+		if($this->input->get('applied')==1)
+		{
+			$this->data['applied_msg']=' Thank you for applying. If your profile is shortlisted for the role, one of our consultant will be in touch with you soon.';
+		}
+		
+		$this->data['cur_page']=$this->router->class;
+		$this->data['page_head']='summary';
+	    $this->data['msg']='';
+		
+		if($this->input->get('del_cv')==1)$this->data['msg']='CV Deleted successfully';
+		if($this->input->get('del_photo')==1)$this->data['msg']='Photo Deleted successfully';
+		
+		$this->data['error']='';
+		$this->data['candidate_id']=$candidate_id;
+		
+		$this->load->model('candidateallmodel');
+		$this->load->model('candidateallmodel');
+		$this->load->model('countrymodel');
+
+		$path = '../js/ckfinder';
+		$width = '100%';
+		$this->editor($path, $width);
+		
+		$this->data['edit_job_html']='';
+		if($this->input->get('edit_job')==1 && $this->input->get('job_profile_id')>0 && $_SESSION['candidate_session'] > 0)
+		{
+				$this->data['job_profile_id'] = $this->input->get('job_profile_id');
+				$this->data['candidate_id'] = $_SESSION['candidate_session'];
+				
+				$this->data["formdata_job"]             = $this->candidateallmodel->get_job_single_record($this->data['job_profile_id']);
+				$this->data["location_ids_pros"]        = $this->candidateallmodel->get_location_ids_job_profile($this->data['job_profile_id']);
+			
+				$this->data["formdata_job"]["country_id"] = $this->data["location_ids_pros"]["country_id"];
+				$this->data["formdata_job"]["state_id"]   = $this->data["location_ids_pros"]["state_id"];
+				$this->data["formdata_job"]["city_id"]    = $this->data["location_ids_pros"]["city_id"];	
+
+				$this->data["country_list"] 	= $this->countrymodel->country_list();
+				$this->data["state_list"] 	    = $this->candidateallmodel->state_list_by_country($this->data["formdata_job"]["country_id"]);
+			
+				$this->data["city_list"] 	    = $this->candidateallmodel->location_list_by_state($this->data["formdata_job"]["state_id"]);				
+
+				$this->data["industries_list"] = $this->candidateallmodel->industries_list();
+				
+				if($this->data["formdata_job"]["job_cat_id"]>0)
+					$this->data["functional_list"] =$this->candidateallmodel->get_functional_by_industry($this->data["formdata_job"]["job_cat_id"]);
+				else
+					$this->data["functional_list"] = $this->candidateallmodel->functional_list();
+
+				if($this->data["formdata_job"]["func_id"]>0)
+					$this->data["designation_list"] =$this->candidateallmodel->get_designation_by_function($this->data["formdata_job"]["func_id"]);
+				else
+					$this->data["designation_list"] = $this->candidateallmodel->desig_list();
+							
+				$this->data["currecy_list"]         = $this->candidateallmodel->currency_list();
+				$this->data["years_list"]           = $this->candidateallmodel->years_list();
+				$this->data["months_list"]          = $this->candidateallmodel->months_list();
+				
+				$this->data['edit_job_html']=$this->load->view('candidates_all/editjobdetail', $this->data,true);
+		}
+				
+		$this->data["formdata"]               = $this->candidateallmodel->get_single_record($candidate_id);
+		$this->data["location_ids"]			  = $this->candidateallmodel->get_country_state_city_ids($candidate_id);
+		
+		$this->data["formdata"]["country_id"] = $this->data["location_ids"]["country_id"];
+		$this->data["formdata"]["state_id"]   = $this->data["location_ids"]["state_id"];
+		$this->data["formdata"]["city_id"]    = $this->data["location_ids"]["city_id"];
+		
+		$this->data['visa_type_list']=$this->candidateallmodel->visa_type_list();
+		
+		$this->data["cur_job_status_list"] = $this->candidateallmodel->cur_job_status_list();
+		
+		$this->data['detail_list'] = $this->candidateallmodel->detail_list($candidate_id);
+		$this->data['candidate_languages'] = $this->candidateallmodel->candidate_languages($candidate_id);
+		$this->data['education_details'] = $this->candidateallmodel->education_deatils($candidate_id);
+
+		$this->data['job_history'] = $this->candidateallmodel->job_list($candidate_id);
+		
+		//print_r($this->data['job_history']);
+		//exit();
+	
+		$this->data['followup_history'] = $this->candidateallmodel->get_followup_detail($candidate_id);
+		
+		$this->data['all_messages'] = $this->candidateallmodel->all_messages($candidate_id);
+	
+		$this->data['candidate_skill'] = $this->candidateallmodel->candidate_skills($candidate_id);
+		
+		//candidate doamin knowledge
+		$this->data['candidate_domain'] = $this->candidateallmodel->candidate_domains($candidate_id);
+		$this->data['admin_user_list']=$this->candidateallmodel->admin_user_list();
+		//Certification 
+		
+		$this->data['cerifications']=$this->candidateallmodel->get_cert();
+		$candidate_certifications = $this->candidateallmodel->candidate_certifications($candidate_id);
+		
+		$cerifications=array();
+		foreach($candidate_certifications as $cert)
+		{
+			$cerifications[]=$cert['cert_id'];
+		}
+		$this->data['candidate_certifications_id']	=	$cerifications;
+		$this->data['candidate_certifications']	=	$candidate_certifications;
+		
+		$this->data['candidate_questionnaire_summary'] = $this->candidateallmodel->get_survey_result($candidate_id);
+		$this->data['candidate_files_summary'] = $this->candidateallmodel->get_files($candidate_id);
+		$this->data['candidate_complaints_summary'] = $this->candidateallmodel->ticket_list($candidate_id);
+
+		//Job Search details(candidate_job_serach)
+		$this->data['job_search'] = $this->candidateallmodel->job_search($candidate_id);
+		//$this->data['feedback_projects'] = $this->data['job_search']['feedback_projects'];
+		//print_r($this->data['job_search']);exit;
+		//Edit skill Modal
+
+		$this->data['skill_list']=$this->candidateallmodel->get_parent_skills();
+		
+		$candidate_skills = $this->candidateallmodel->candidate_skills($candidate_id);
+		
+		$skills=array();
+		foreach($candidate_skills as $skill)
+		{
+			$skills[]=$skill['skill_id'];
+		}
+		$this->data['candidate_skills']	=	$skills;
+
+		
+		//all child skills		
+		$this->data['all_child_skills']	=	$this->candidateallmodel->child_skills();
+		
+		//Edit Language Modal
+		//Language Deatils
+		$this->data['lang_list']=$this->candidateallmodel->get_language_set();
+		$candidate_languages =$this->candidateallmodel->candidate_languages($candidate_id);
+		
+		$languages=array();
+		foreach($candidate_languages as $lang)
+		{
+			$languages[]=$lang['lang_id'];
+		}
+		$this->data['candidate_language']	=	$languages;
+		//print_r($languages);
+		//exit();
+		
+		//Edit Education Modal
+		
+		$this->data["country_list"] 	        = $this->countrymodel->country_list();
+
+		$this->data["state_list"] 	    = $this->candidateallmodel->state_list_by_country($this->data["formdata"]["country_id"]);
+		$this->data["city_list"] 	    = $this->candidateallmodel->location_list_by_state($this->data["formdata"]["state_id"]);
+				
+		$this->data["nationality_list"] 	    = $this->countrymodel->country_list();
+		$this->data["current_location_list"] 	= $this->countrymodel->country_list();
+		$this->data["city_list"]                = $this->candidateallmodel->city_list();
+		
+		$this->data["edu_level_list"]   = $this->candidateallmodel->edu_level_list();
+		$this->data["edu_years_list"]   = $this->candidateallmodel->edu_years_list();
+		//$this->data["edu_course_list"]  = $this->candidateallmodel->edu_course_list();
+		
+		$this->data["edu_course_list"]  = array('' => 'Select Course');
+
+		$this->data["edu_spec_list"] = $this->candidateallmodel->edu_spec_list();
+		$this->data["edu_univ_list"] = $this->candidateallmodel->edu_univ_list();
+		$this->data["edu_course_type_list"] = $this->candidateallmodel->edu_course_type_list();
+
+		//employment
+		$this->data["industries_list"] = $this->candidateallmodel->industries_list();
+		$this->data["functional_list"] = $this->candidateallmodel->functional_list();
+		$this->data["designation_list"] = $this->candidateallmodel->desig_list();	
+				
+		$this->data["currecy_list"] = $this->candidateallmodel->currency_list();
+		$this->data["years_list"] = $this->candidateallmodel->years_list();
+		$this->data["months_list"] = $this->candidateallmodel->months_list();
+		
+		//suggested jobs to candidate		
+		$this->data['suggested_jobs']=$this->candidateallmodel->get_suggested_jobs($candidate_id);	
+				
+		//applied jobs of candidate		
+		$this->data['applied_jobs']=$this->candidateallmodel->get_job_list($candidate_id);
+
+		//shortlisted jobs
+		$this->data['shortlisted']=$this->candidateallmodel->get_shortlisted($candidate_id);
+
+		//interview scheduled jobs
+		$this->data['interview_list']=$this->candidateallmodel->get_interview_list($candidate_id);
+
+		//selected jobs
+		$this->data['jobs_selected']=$this->candidateallmodel->jobs_selected($candidate_id);
+
+		//offer letters issued
+		$this->data['offer_letters_issued']=$this->candidateallmodel->offer_letters_issued($candidate_id);
+		
+		//offer accepted
+		$this->data['offer_accepted']=$this->candidateallmodel->offer_accepted($candidate_id);
+
+		//invoice genereted
+		$this->data['invoice_generated']=$this->candidateallmodel->invoice_generated($candidate_id);
+
+
+		//all child skills		
+		$this->data['all_child_skills']	=	$this->candidateallmodel->child_skills();
+
+		//present contract details
+		$this->data['contract']=$this->candidateallmodel->get_contract_detail($candidate_id);
+		//print_r($this->data['contract']);
+		//exit();
+		//contracts months
+	
+		$this->data['contract_months']=array(
+						'0' => 'Select Total Months',
+						'1' => '1',
+						'2' => '2',
+						'3' => '3',
+						'4' => '4',
+						'5' => '5',
+						'6' => '6',
+						'7' => '7',
+						'8' => '8',
+						'9' => '9',
+						'10' => '10',
+						'11' => '11',
+						'12' => '12',
+						'13' => '13',
+						'14' => '14',
+						'15' => '15',
+						'16' => '16',
+						'17' => '17',
+						'18' => '18',
+						'19' => '19',
+						'20' => '20',
+						'21' => '21',
+						'22' => '22',
+						'23' => '23',
+						'24' => '24',
+						'25' => '25',
+						'26' => '26',
+						'27' => '27',
+						'28' => '28',
+						'29' => '29',
+						'30' => '30',
+						'31' => '31',
+						'32' => '32',
+						'33' => '33',
+						'34' => '34',
+						'35' => '35',
+						'36' => '36'
+						);
+
+
+		/*--------------------------------------------------------------------------*/		
+		//category /industry
+		$category = $this->candidateallmodel->get_cat_list($candidate_id);		
+		$cat_list=array();		
+		foreach($category as $cat)
+		{
+			$cat_list[]=$cat['job_cat_id'];
+		}
+		$this->data['category_list']	=	$cat_list;
+		$this->data['category_name']	=	$category;
+		
+		
+		// funcional area
+		$function = $this->candidateallmodel->get_function_list($candidate_id);
+		
+		$fun_list=array();
+		foreach($function as $fun)
+		{
+			$fun_list[]=$fun['func_id'];
+		}
+		$this->data['function_list']	=	$fun_list;
+		$this->data['function_name']	=	$function;
+
+
+		// designation list
+		$designation = $this->candidateallmodel->get_designation_list($candidate_id);		
+		$desig_list=array();
+		foreach($designation as $desig)
+		{
+			$desig_list[]=$desig['desig_id'];
+		}
+		$this->data['desig_list']	=	$desig_list;
+		$this->data['desig_name']	=	$designation;				
+		
+		/*-----------------------------------------------------------------*/
+		
+		//primary_skills
+		$candidate_skills_primary = $this->candidateallmodel->candidate_skills_primary($candidate_id);
+		
+		$skills_primary=array();
+		foreach($candidate_skills_primary as $skill)
+		{
+			$skills_primary[]=$skill['skill_id'];
+		}
+		$this->data['candidate_skills_primary']	=	$skills_primary; 
+		
+		$this->data['skills_primary']	        =	$candidate_skills_primary;
+	
+
+			//secondary skills
+		$candidate_skills_secondary = $this->candidateallmodel->candidate_skills_secondary($candidate_id);
+		
+		$skills_secondary=array();
+		foreach($candidate_skills_secondary as $skill)
+		{
+			$skills_secondary[]=$skill['skill_id'];
+		}
+		$this->data['candidate_skills_secondary']	=	$skills_secondary;
+		
+		$this->data['skills_secondary']	            =	$candidate_skills_secondary;
+
+		//Language Deatails pms_candidate_language
+		//$this->data['lang_details'] = $this->candidateallmodel->get_lang_details($candidate_id);
+		
+
+		/*--------------------------------------------------------------------------*/
+		
+		if($this->input->post('candidate_id')!=''){
+				foreach($this->input->post('candidate_id') as $key => $val)
+				{
+					$this->db->where('candidate_id',$val);
+					$this->db->where('candidate_id',$this->input->post('candidate_id'));
+					$this->db->delete('pms_admin_candidates');
+					
+						if($this->input->post('action')=='Add')
+						{
+							$data=array(
+							'candidate_id'   =>$this->input->post('candidate_id'),
+							'candidate_id'        =>$val,
+							'assigned_date'   => date('Y-m-d'),
+							);			
+							$this->db->insert('pms_admin_candidates',$data);
+						}
+				}
+			redirect('candidates_all/summary/');
+		}
+		
+		
 		//print_r($this->data["formdata"]);
 		//exit();
 		$this->load->view("include/header",$this->data);
 		$this->load->view("candidates_all/candidate_summary",$this->data);
 		$this->load->view("include/footer",$this->data);
 	}
-
 	public function get_functional_by_industry()
 	{
 		$this->load->model('candidateallmodel');
