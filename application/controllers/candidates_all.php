@@ -162,7 +162,9 @@
 		$this->data["months_list"] = $this->candidateallmodel->months_list();
 		$this->load->view('candidates_all/addjobdetail', $this->data);
 	}
-	
+
+
+	//---------1111-----//
 	function add_job_history()
 	{
 		$candidate_id=$_SESSION['candidate_session'];		
@@ -198,6 +200,31 @@
 				);
 			$this->db->insert('pms_candidate_job_profile', $data);
 			redirect('candidates_all/summary/');
+		}
+	}
+
+	function update_desired_job()
+	{
+		{
+		
+			if( $this->input->post('candidate_id')!='')
+			{
+				$this->load->model('candidateallmodel');
+				$candidate_id = $this->input->post('candidate_id');
+	
+				
+				$data_profile =array(
+					'desig_id' => $this->input->post('desig_id'), 
+					'candidate_id'         => $this->input->post('candidate_id'),  
+				);
+				
+				$this->candidateallmodel->update_desired_jobs_record($candidate_id,$data_profile,);
+				redirect('candidates_all/summary/?upd=1');
+			}else
+			{
+				echo 'Invalid Data';
+				exit();
+			}
 		}
 	}
 		
@@ -433,6 +460,31 @@
         $this->candidateallmodel->edit_passport_detail($candidateId);
         $status = array("STATUS" => "1", "SUCCESS_ID" => $candidateId);
         echo json_encode($status);
+	}
+
+
+//------------here---------//	
+	function update_resume_headline()
+	{
+	
+		if( $this->input->post('candidate_id')!='')
+		{
+			$this->load->model('candidateallmodel');
+			$candidate_id = $this->input->post('candidate_id');
+
+			
+			$data_profile =array(
+				'headline'         => $this->input->post('headline'),  
+				'candidate_id'         => $this->input->post('candidate_id'),  
+			);
+			
+			$this->candidateallmodel->update_headline_record($candidate_id,$data_profile,);
+			redirect('candidates_all/summary/?upd=1');
+		}else
+		{
+			echo 'Invalid Data';
+			exit();
+		}
 	}
 
 	function update_candidate_profile()
@@ -1200,6 +1252,12 @@
 		}
 				
 		$this->data["formdata"]               = $this->candidateallmodel->get_single_record($candidate_id);
+
+		
+//------------here-----------//
+
+		$this->data["headline"]               = $this->candidateallmodel->get_headline_record($candidate_id);
+		$this->data["functional_list_data"] = $this->candidateallmodel->functional_list_data();
 		$this->data["location_ids"]			  = $this->candidateallmodel->get_country_state_city_ids($candidate_id);
 		
 		$this->data["formdata"]["country_id"] = $this->data["location_ids"]["country_id"];

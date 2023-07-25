@@ -262,6 +262,23 @@ class Candidateallmodel extends CI_Model {
 	   }
    }
 
+   //-----------------here00---------//
+   function get_headline_record($candidate_id){
+	   
+	$query = $this->db->query("select * from pms_resume_headline where candidate_id='$candidate_id' ");
+	
+	$row=$query->row_array();
+	if(count($row) > 0)
+	{
+		return $row;
+	}else
+	{
+		return 0;
+	}
+}
+
+
+
 	function get_functional_by_industry($job_cat_id='')
     {
 		$query=$this->db->query("select distinct a.func_id, a.func_area from pms_job_functional_area a inner join pms_job_func_to_category b on a.func_id=b.func_id where b.job_cat_id=".$job_cat_id." order by a.func_area");
@@ -505,6 +522,40 @@ function select_aplication_visa($candidate_id)
         $query=$this->db->query("select * from pms_email_sms_history where candidate_id=".$candidate_id);
 		return $query->result_array();
 	}
+
+
+	//-------------here11-------------//
+	function update_headline_record($candidate_id,$data_profile)
+	{
+		if(!empty($candidate_id)){
+			$query = $this->db->query('SELECT * from pms_resume_headline where candidate_id='.$candidate_id);
+			if($query->num_rows()>0)
+			{
+				$this->db->where('candidate_id', $candidate_id);
+				$this->db->update('pms_resume_headline', $data_profile);
+			}else
+			{
+				$this->db->insert('pms_resume_headline', $data_profile);				
+			}
+		}
+	}
+
+	
+	function update_desired_jobs_record($candidate_id,$data_profile)
+	{
+		if(!empty($candidate_id)){
+			$query = $this->db->query('SELECT * from pms_desired_jobs where candidate_id='.$candidate_id);
+			if($query->num_rows()>0)
+			{
+				$this->db->where('candidate_id', $candidate_id);
+				$this->db->update('pms_desired_jobs', $data_profile);
+			}else
+			{
+				$this->db->insert('pms_desired_jobs', $data_profile);				
+			}
+		}
+	}
+
 
 	function update_candidate_record($candidate_id,$data_profile,$data_job)
 	{//edit profile
@@ -1678,7 +1729,18 @@ $this->db->query("update pms_candidate_files set file_name='no_photo.png',file_t
 		$finalDropDown = $dropDownList;
 		return $finalDropDown;
 	}
-				
+	function functional_list_data()
+	{
+		$query = $this->db->query('select distinct func_id, func_area from pms_job_functional_area order by func_area asc');
+		$row=$query->result_array();
+		if(count($row) > 0)
+		{
+			return $row;
+		}else
+		{
+			return 0;
+		}
+	}			
 	function edu_years_list()
 	{
 		$dropDownList['']='Select Year';

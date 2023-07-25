@@ -8,7 +8,7 @@
 <!-- Resume headline -->
                   <div tabindex='2' id="resume_headline" class=" col-md-6 col-lg-12 order-2 mb-4">
                      <div class="card h-100">
-                        <div class="card-header d-flex align-items-center justify-content-between">
+                        <div class="card-header d-flex align-items-center justify-content-between" data-bs-toggle="offcanvas" data-bs-target="#resume_heading">
                            <h5 class="card-title m-0 me-2">Resume headline</h5>
                            <div class="dropdown">
                               <button  class="btn btn-sm btn-outline-secondary ">Update</button>
@@ -20,7 +20,8 @@
                                  <div class="col-md-12">
                                     <div class="info-container">
                                        <ul class="list-unstyled">
-                                       6 year experienced laravel developer having addon experience in aws and angular
+                                          <br>
+                                       <?php echo $headline['headline']?>
                                        </ul>
                                     </div>
                                  </div>
@@ -203,7 +204,7 @@
                         <div class="card-header d-flex align-items-center justify-content-between">
                            <h5 class="card-title m-0 me-2">Desired Jobs</h5>
                            <div class="dropdown">
-                              <button  class="btn btn-sm btn-outline-secondary">Update</button>
+                              <button  class="btn btn-sm btn-outline-secondary" data-bs-toggle="offcanvas" data-bs-target="#update_desired_jobs" aria-controls="offcanvasEnd" >Update</button>
                            </div>
                         </div>
                         <hr class="m-0" />
@@ -270,7 +271,7 @@
                                     </div>
                                  </div>
                                  <div class="col-md-1"> 
-                                 <a ><i class="bx bx-edit-alt me-2"></i></a>
+                                 <a  onclick="" id="edit_edu"><i class="bx bx-edit-alt me-2"></i></a>
                                  </div>
                                  <div class="col-md-12">
                                  <li class="mb-1">
@@ -462,6 +463,36 @@
 <!-- Photo & CV end -->
          </div>
       </div>
+   </div>
+</div>
+<!-- add resume heading -->
+<div class="offcanvas offcanvas-end" style="width: 80%;" tabindex="-1" id="resume_heading" aria-labelledby="offcanvasEndLabel" >
+   <div class="offcanvas-header">
+      <h5 id="offcanvasEndLabel" class="offcanvas-title">Update Resume Headline</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
+   </div>
+   <div class="offcanvas-body my-auto mx-0 flex-grow-0">
+      <div class="card-body">
+         <form class="form-horizontal form-bordered"  method="post" id="candidate_form4" name="candidate_form4" action="<?php echo $this->config->site_url();?>/candidates_all/update_resume_headline/"  onSubmit="return validate_profile_form();">
+            <div class="row">
+               <input type="hidden" name="candidate_id" value="<?php echo $candidate_id;?>">
+               <div class="col-md-12">
+                  <div class="info-container">
+                     <ul class="list-unstyled">
+                        <li class="mb-2">
+                           <span class="fw-bold me-2">Headline</span>
+                           <textarea class="form-control" placeholder="headline"  type="text"  name="headline"  id="headline"><?php echo $headline['headline']?></textarea>
+                        </li>
+                     </ul>
+                  </div>
+               </div>
+            </div>
+      </div>
+      <button type="submit" class="btn btn-primary mb-2 d-grid w-100">Update</button>
+      <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas" >
+      Cancel
+      </button>
+      </form>
    </div>
 </div>
 <!-- add personal details -->
@@ -676,6 +707,46 @@
    </div>
 </div>
 <!-- professional details end -->
+
+
+<!-- deisred jobs -->
+
+<div class="offcanvas offcanvas-end" style="width: 50%;" tabindex="-1" id="update_desired_jobs" aria-labelledby="offcanvasEndLabel" >
+   <div class="offcanvas-header">
+      <h5 id="offcanvasEndLabel" class="offcanvas-title">Update Desired Jobs</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" ></button>
+   </div>
+   <div class="offcanvas-body  mx-0 flex-grow-0">
+      <div class="card-body">
+      <form class="form-horizontal form-bordered"  method="post" id="job_form" name="add_job_frm" action="<?php echo $this->config->site_url();?>/candidates_all/update_desired_job/"> 
+      <input type="hidden" name="candidate_id" value="<?php echo $candidate_id;?>">
+                <div class="row">
+               <div class="col-md-12">
+                  <div class="info-container">
+                     <ul class="list-unstyled">
+                            
+            <select class="form-control js-example-basic-multiple-cert" multiple="multiple" name="skills[]" id="multiple_skill" > 
+               <option value="">Select Skill</option>
+               
+               <?php foreach($functional_list_data as $functional){?>
+               <option value="<?php echo $functional['func_id'];?>"><?php echo $functional['func_area'];?></option>
+               <?php }?>
+            </select>
+                   
+                     </ul>
+                  </div>
+               </div>
+               
+            </div>
+      </div>
+      <button type="submit" class="btn btn-primary mb-2 d-grid w-100">Add</button>
+      <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas" >
+      Cancel
+      </button>
+      </form>
+   </div>
+</div>
+<!-- end desired jobs -->
 <!-- add Education details -->
 <div class="offcanvas offcanvas-end" style="width: 50%;" tabindex="-1" id="education_details_add" aria-labelledby="offcanvasEndLabel" >
    <div class="offcanvas-header">
@@ -924,3 +995,238 @@ $('#level_id').change(function()
 
    </script>
 
+<script>
+
+$(document).ready(function()
+{
+	
+$('#multiple_skill').addClass('form-control hori');
+
+$(".js-example-basic-multiple-cert").select2();
+	
+$('#datepickfrom').datepicker({
+	dateFormat: "yy-mm-dd",
+	changeMonth: true,
+	changeYear: true,
+	yearRange: "c-100:c+100"
+	});
+	
+$('#datepickto').datepicker({
+	dateFormat: "yy-mm-dd",
+	changeMonth: true,
+	changeYear: true,
+	yearRange: "c-100:c+100"
+	});
+	
+$('#datepicker2').datepicker({
+		dateFormat: "yy-mm-dd",
+		changeMonth: true,
+		changeYear: true,
+		yearRange: "c-100:c+100"
+
+	});
+		
+// Function for delete candidate professional
+
+$(document).on('click', '#delete_candidate_prof', function(){																													
+  if(window.confirm("Are You Sure to delete this data?")){  
+	  var $url= $(this).attr('data-url');	 
+	 $.ajax({	
+	   type: 'POST',	
+	   url: $url,	
+	   success: function(data){		   
+		   if(data.status == 'success')
+		   {	   			
+				get_candidate_professional('<?php echo $candidate_id;?>');
+	   	   }
+	   }
+	 }); 
+  }
+});
+
+$(document).on('click', '#delete_candidate_contract', function(){																													
+  if(window.confirm("Are You Sure to delete this data?")){  
+	  var $url= $(this).attr('data-url');	 
+	 $.ajax({	
+	   type: 'POST',	
+	   url: $url,	
+	   success: function(data){		   
+		   if(data.status == 'success')
+		   {	   			
+
+				get_present_contract('<?php echo $candidate_id;?>');
+			
+	   	   }
+		  
+	   }
+			
+	 }); 
+  }
+});
+
+$('#level_id').change(function() 
+	{	
+		jQuery('#course_id').html('');
+		jQuery('#course_id').append('<option value="">Select Course</option');
+			
+		if($('#level_id').val()=='')return;
+			$.ajax({
+			  type: 'POST',
+			  url: '<?php echo $this->config->site_url();?>/candidates_all/getcourses/',
+			  data: { level_study: $('#level_id').val()},
+			  dataType: 'json',
+			  
+			  beforeSend:function(){
+					jQuery('#course_id').html('');
+					jQuery('#course_id').append('<option value="">Loading...</option');
+			  },
+			  
+			  success:function(data){
+			  
+				  if(data.success==true)
+				  {
+					  jQuery('#course_id').html('');
+					  jQuery('#course_id').append(data.course_list);
+
+				 /* sorting start hrre */
+					var my_options = $("#course_id option");
+					var selected = $("#course_id").val(); /* preserving original selection, step 1 */
+					my_options.sort(function(a,b) {
+						if (a.text > b.text) return 1;
+						else if (a.text < b.text) return -1;
+						else return 0
+					})
+					$("#course_id").empty().append( my_options );
+					$("#course_id").val(selected); /* preserving original selection, step 2 */
+				  /* sorting end hrre */					 
+				  }else
+				  {
+					alert(data.success);
+				  }
+				},
+			  
+			  error:function(){
+					alert('Problem with server. Pelase try again');
+					jQuery('#course_id').html('');
+					jQuery('#course_id').append('<option value="">Select Course</option');
+			  }
+			});	
+	});
+
+$("#add_job_link").click(function ()
+ {
+	$('html, body').animate({
+		scrollTop: $("#add_job_history").offset().top
+	}, 500);
+});
+
+$("#edit_mode_profession").click(function ()
+{
+		alert('You are editing Professional History Now, Please update it or cancel to add new one.');
+		$('html, body').animate({
+			scrollTop: $("#add_job_history").offset().top
+		}, 500);
+});   
+
+<?php if($edit_job_html!=''){?>
+	$('html, body').animate({
+		scrollTop: $("#add_job_history").offset().top
+	}, 500);
+<?php } ?>
+
+});
+
+// VAlidate Email ADDRESS	
+function email_validate() 
+{
+		if($('#subject').val()=='')
+		{
+			alert('Enter Subject');
+			$('#subject').focus();
+			return false;
+		} 
+		if($('#email_text').val()=='')
+		{
+			alert('Enter Subject');
+			$('#email_text').focus();
+			return false;
+		} 
+		return true;
+	}
+
+$(document).on('click', '#edit_edu', function()
+{ 
+	var $url= $(this).attr('data-url');	 
+	 $.ajax({	
+	   type: 'POST',	
+	   url: $url,
+	   dataType: "html",
+	   success: function (data) 
+	   {	
+			$('#data_holder').html(data);
+   	   }			
+	 }); 
+	$('#edit_education').modal('show');	
+});
+
+$(document).on('click', '#edit_job_profile', function()
+{ 
+	var $url= $(this).attr('data-url');	 
+	 $.ajax({	
+	   type: 'POST',	
+	   url: $url,
+	   dataType: "html",
+	   success: function (data) 
+	   {	
+			$('#job_data_holder').html(data);					
+   	   }			
+	 }); 
+	$('#edit_job_profile_modal').modal('show');	
+});
+
+function validate_profile_form()
+{
+	
+	if($('#first_name').val()=='')
+		{
+			alert('Enter Full Name');
+			$('#first_name').focus();
+			return false;
+		} 
+		
+
+	if($('#password').val()!='' && $('#c_password').val()=='')
+		{
+			alert('Confirm your password');
+			$('#c_password').focus();
+			return false;
+		} 
+
+	if($('#password').val()!='' && $('#c_password').val()!=$('#password').val())
+		{
+			alert('Please enter correct password');
+			$('#c_password').focus();
+			return false;
+		} 
+
+	if($('#mobile').val()=='')
+		{
+			alert('Enter Mobile');
+			$('#mobile').focus();
+			return false;
+		} 
+		
+						
+				
+	 if($('#driving_license_yes').is(':checked')) 
+	 { 
+	 	if($('#driving_license_country').val()=='')
+		{
+		 	alert("Please select country of Driving License issued"); 
+			return false;
+		}
+	 }
+	return true;
+}
+
+</script>
