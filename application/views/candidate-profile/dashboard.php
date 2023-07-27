@@ -21,7 +21,7 @@
                                     <div class="info-container">
                                        <ul class="list-unstyled">
                                           <br>
-                                       <?php echo $headline['headline']?>
+                                       <?php if($headline) { echo $headline['headline']; } else { echo ' Provide a resume heading '; }?>
                                        </ul>
                                     </div>
                                  </div>
@@ -214,8 +214,10 @@
                                  <div class="col-md-12">
                                     <div class="info-container">
                                        <ul class="list-unstyled">
-                                       <span class="badge bg-label-primary me-1">IT</span>
-                                       <span class="badge bg-label-primary me-1">Software Development</span>
+                                       <?php $desired_jobs_name = array_column($desired_jobs, 'func_area');
+                                       foreach($desired_jobs_name as $name){ ?>
+                                          <span class="badge bg-label-primary me-1"><?php echo $name; ?></span>
+                                       <?php } ?>  
                                        </ul>
                                     </div>
                                  </div>
@@ -481,7 +483,7 @@
                      <ul class="list-unstyled">
                         <li class="mb-2">
                            <span class="fw-bold me-2">Headline</span>
-                           <textarea class="form-control" placeholder="headline"  type="text"  name="headline"  id="headline"><?php echo $headline['headline']?></textarea>
+                           <textarea class="form-control" placeholder="headline"  type="text"  name="headline"  id="headline"><?php if($headline){ echo $headline['headline'];}?></textarea>
                         </li>
                      </ul>
                   </div>
@@ -724,12 +726,18 @@
                <div class="col-md-12">
                   <div class="info-container">
                      <ul class="list-unstyled">
-                            
+                     
+                    <?php 
+
+$desired_jobs = array_column($desired_jobs, 'desired_jobs');?>        
             <select class="form-control js-example-basic-multiple-cert" multiple="multiple" name="skills[]" id="multiple_skill" > 
                <option value="">Select Skill</option>
                
                <?php foreach($functional_list_data as $functional){?>
-               <option value="<?php echo $functional['func_id'];?>"><?php echo $functional['func_area'];?></option>
+               <option
+               <?php  if (in_array($functional['func_id'], $desired_jobs)){ ?> selected="selected" 
+                    <?php  } ?> 
+                value="<?php echo $functional['func_id'];?>"><?php echo $functional['func_area'];?></option>
                <?php }?>
             </select>
                    

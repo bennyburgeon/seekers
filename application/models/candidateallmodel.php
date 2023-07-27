@@ -276,7 +276,21 @@ class Candidateallmodel extends CI_Model {
 		return 0;
 	}
 }
-
+   //-----------------here00---------//
+   function get_desired_jobs_record($candidate_id){
+	   
+	$query = $this->db->query("select * from pms_desired_jobs as dj join pms_job_functional_area as jfa on 
+	jfa.func_id=dj.desired_jobs where dj.candidate_id='$candidate_id' ");
+	
+	$row=$query->result_array();
+	if(count($row) > 0)
+	{
+		return $row;
+	}else
+	{
+		return 0;
+	}
+}
 
 
 	function get_functional_by_industry($job_cat_id='')
@@ -544,15 +558,10 @@ function select_aplication_visa($candidate_id)
 	function update_desired_jobs_record($candidate_id,$data_profile)
 	{
 		if(!empty($candidate_id)){
-			$query = $this->db->query('SELECT * from pms_desired_jobs where candidate_id='.$candidate_id);
-			if($query->num_rows()>0)
-			{
-				$this->db->where('candidate_id', $candidate_id);
-				$this->db->update('pms_desired_jobs', $data_profile);
-			}else
-			{
-				$this->db->insert('pms_desired_jobs', $data_profile);				
-			}
+			$this->db->where('candidate_id',$candidate_id);
+			$this->db->delete('pms_desired_jobs');
+
+			$this->db->insert_batch('pms_desired_jobs', $data_profile);
 		}
 	}
 

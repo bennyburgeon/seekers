@@ -211,14 +211,23 @@
 			{
 				$this->load->model('candidateallmodel');
 				$candidate_id = $this->input->post('candidate_id');
-	
+				$skills=$this->input->post('skills');
+				//$data_profile=[];
+				// foreach($skills as $skill){
+				// 	$data_profile =[
+				// 		'desired_jobs' => $skill, 
+				// 		'candidate_id' => $candidate_id,  
+				// 	];
+				// }
+				$i = 0;
+				foreach($skills as $key=>$skill)
+				{
+					  $data[$i]['desired_jobs'] = $skill;
+					  $data[$i]['candidate_id'] = $candidate_id;
+					  $i++;
+				}
 				
-				$data_profile =array(
-					'desig_id' => $this->input->post('desig_id'), 
-					'candidate_id'         => $this->input->post('candidate_id'),  
-				);
-				
-				$this->candidateallmodel->update_desired_jobs_record($candidate_id,$data_profile,);
+				$this->candidateallmodel->update_desired_jobs_record($candidate_id,$data);
 				redirect('candidates_all/summary/?upd=1');
 			}else
 			{
@@ -1257,6 +1266,7 @@
 //------------here-----------//
 
 		$this->data["headline"]               = $this->candidateallmodel->get_headline_record($candidate_id);
+		$this->data["desired_jobs"]               = $this->candidateallmodel->get_desired_jobs_record($candidate_id);
 		$this->data["functional_list_data"] = $this->candidateallmodel->functional_list_data();
 		$this->data["location_ids"]			  = $this->candidateallmodel->get_country_state_city_ids($candidate_id);
 		
