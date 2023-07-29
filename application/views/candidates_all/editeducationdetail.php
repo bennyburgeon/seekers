@@ -76,7 +76,11 @@
 <tr>
 <td colspan="2">
 <span class="click-icons">
-<input type="submit" class="attach-subs" value="Save" id="update_education" style="width:180px;">
+<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                  Close
+</button>
+<button type="submit" class="btn btn-primary">Save changes</button>
+                              
 </span>
 </td>
 </tr>

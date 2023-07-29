@@ -34,8 +34,6 @@
 <link rel="stylesheet" href="<?php echo base_url('candidate/assets/css/demo.css');?>" />
 <link rel="stylesheet" href="<?php echo base_url('candidate/assets/css/custom.css');?>" />
 <link rel="stylesheet" href="<?php echo base_url('candidate/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css');?>" />
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
 <script src="<?php echo base_url('candidate/assets/vendor/js/helpers.js');?>"></script>
 <script src="<?php echo base_url('candidate/assets/js/config.js');?>"></script>

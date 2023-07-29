@@ -28,8 +28,48 @@ class Notifications extends CI_Controller {
 		//configure ckfinder with ckeditor config 
 		$this->ckfinder->SetupCKEditor($this->ckeditor,$path); 
    }
-   
-	function index($offset = 0)
+   function index($offset = 0)
+	{
+		$this->load->model('candidateallmodel');
+		$this->load->model('notificationsmodel');
+		$candidate_id=$_SESSION['candidate_session'];
+		$this->data['detail_list'] = $this->candidateallmodel->detail_list($candidate_id);
+		$this->data["formdata"]  = $this->candidateallmodel->get_single_record($candidate_id);
+		$searchterm='';
+		 $start=0;
+		if(isset($_GET['limit'])){
+			if($_GET['limit']!='')
+			$limit= $_GET['limit'];
+		 }
+		 else{
+		 	 $limit=50;
+		 }
+		 if($this->input->get('sort_by')!='')
+		{
+			$sort_by=$this->input->get("sort_by");
+		}
+		else
+		{
+			$sort_by = 'asc';
+		}
+		if($this->input->get("rows")!='')
+		{
+			$start=$this->input->get("rows");
+		}
+		if($this->input->get("rows")!='')
+		{
+			$rows=$this->input->get("rows");
+		}
+		$this->data["records"] = $this->notificationsmodel->get_list($start,$limit,$searchterm,$sort_by);
+		
+		$this->load->view("candidate-profile/header",$this->data);
+		$this->load->view("candidate-profile/include/sidebar",$this->data);
+		$this->load->view("candidate-profile/include/head",$this->data);
+		$this->load->view("candidate-profile/notification",$this->data);
+		$this->load->view("candidate-profile/footer",$this->data);
+		
+	}
+	function index1($offset = 0)
 	{
 		$this->load->library('pagination');
 		$searchterm='';

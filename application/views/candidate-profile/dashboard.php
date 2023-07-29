@@ -343,7 +343,8 @@
                                             </div>
                                         </div>
                                         <div class="col-md-1"> 
-                                        <a ><i class="bx bx-edit-alt me-2"></i></a>
+                                        <a data-url="<?php echo base_url().'index.php/candidates_all/loadEditEducationhtml/?edu_id='.$val['eucation_id'];?>" id="edit_edu" class="btn btn-info btn-xs"><i class="bx bx-edit-alt me-2"></i></a>
+                                        
                                         </div>
                                 <?php } ?>
                             </div>
@@ -403,6 +404,7 @@
                   </div>
 <!-- Other Details end -->
 <!-- Photo & CV -->
+                     
                   <div tabindex='2' id="photo_cv" class=" col-md-6 col-lg-12 order-2 mb-4">
                      <div class="card h-100">
                         <div class="card-header d-flex align-items-center justify-content-between">
@@ -462,6 +464,7 @@
                         </div>
                      </div>
                   </div>
+                  
 <!-- Photo & CV end -->
          </div>
       </div>
@@ -747,6 +750,7 @@ $desired_jobs = array_column($desired_jobs, 'desired_jobs');?>
                
             </div>
       </div>
+      
       <button type="submit" class="btn btn-primary mb-2 d-grid w-100">Add</button>
       <button type="button" class="btn btn-outline-secondary d-grid w-100" data-bs-dismiss="offcanvas" >
       Cancel
@@ -942,299 +946,82 @@ $desired_jobs = array_column($desired_jobs, 'desired_jobs');?>
       </button>
       </form>
    </div>
+
+
+<!-- modal popup education -->
+<div class="modal fade" id="edit_education" tabindex="-1" aria-hidden="true">
+         <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="modalCenterTitle">Modal title</h5>
+               <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+               ></button>
+            </div>
+            <div class="modal-body">
+               
+            </div>
+            <div class="modal-footer">
+               <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                  Close
+               </button>
+               <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+         </div>
+      </div>
+      </div>
+   </div>
+<!-- end modal -->
 </div>
+
+   <!-- modal popup education -->
+
+ 
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="modalCenterTitle">Edit Education Details</h5>
+                                <button
+                                  type="button"
+                                  class="btn-close"
+                                  data-bs-dismiss="modal"
+                                  aria-label="Close"
+                                ></button>
+                              </div>
+                              <div class="modal-body" id="data_holder">
+                                
+                              </div>
+                              <div class="modal-footer">
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+<!-- end modal -->
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 <script language="javascript">
-   $(document).ready(function() {
-      $(".js-example-basic-multiple-cert").select2();
-});
-   $(document).ready(function()
-{
-$('#level_id').change(function() 
-	{	
-		jQuery('#course_id').html('');
-		jQuery('#course_id').append('<option value="">Select Course</option');
-			
-		if($('#level_id').val()=='')return;
-			$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $this->config->site_url();?>/candidates_all/getcourses/',
-			  data: { level_study: $('#level_id').val()},
-			  dataType: 'json',
-			  
-			  beforeSend:function(){
-					jQuery('#course_id').html('');
-					jQuery('#course_id').append('<option value="">Loading...</option');
-			  },
-			  
-			  success:function(data){
-			  
-				  if(data.success==true)
-				  {
-					  jQuery('#course_id').html('');
-					  jQuery('#course_id').append(data.course_list);
 
-				 /* sorting start hrre */
-					var my_options = $("#course_id option");
-					var selected = $("#course_id").val(); /* preserving original selection, step 1 */
-					my_options.sort(function(a,b) {
-						if (a.text > b.text) return 1;
-						else if (a.text < b.text) return -1;
-						else return 0
-					})
-					$("#course_id").empty().append( my_options );
-					$("#course_id").val(selected); /* preserving original selection, step 2 */
-				  /* sorting end hrre */					 
-				  }else
-				  {
-					alert(data.success);
-				  }
-				},
-			  
-			  error:function(){
-					alert('Problem with server. Pelase try again');
-					jQuery('#course_id').html('');
-					jQuery('#course_id').append('<option value="">Select Course</option');
-			  }
-			});	
-	});
+$(document).ready(function(){
+   $(document).on('click', '#edit_edu', function(){ 
+      var $url= $(this).attr('data-url');	 
+      $.ajax({	
+         type: 'POST',	
+         url: $url,
+         dataType: "html",
+         success: function (data) {	
+            
+            $('#data_holder').html(data);
+         }			
+      }); 
+      $('#modalCenter').modal('show');	
+   });
 });
 
 
    </script>
-
-<script>
-
-$(document).ready(function()
-{
-	
-$('#multiple_skill').addClass('form-control hori');
-
-$(".js-example-basic-multiple-cert").select2();
-	
-$('#datepickfrom').datepicker({
-	dateFormat: "yy-mm-dd",
-	changeMonth: true,
-	changeYear: true,
-	yearRange: "c-100:c+100"
-	});
-	
-$('#datepickto').datepicker({
-	dateFormat: "yy-mm-dd",
-	changeMonth: true,
-	changeYear: true,
-	yearRange: "c-100:c+100"
-	});
-	
-$('#datepicker2').datepicker({
-		dateFormat: "yy-mm-dd",
-		changeMonth: true,
-		changeYear: true,
-		yearRange: "c-100:c+100"
-
-	});
-		
-// Function for delete candidate professional
-
-$(document).on('click', '#delete_candidate_prof', function(){																													
-  if(window.confirm("Are You Sure to delete this data?")){  
-	  var $url= $(this).attr('data-url');	 
-	 $.ajax({	
-	   type: 'POST',	
-	   url: $url,	
-	   success: function(data){		   
-		   if(data.status == 'success')
-		   {	   			
-				get_candidate_professional('<?php echo $candidate_id;?>');
-	   	   }
-	   }
-	 }); 
-  }
-});
-
-$(document).on('click', '#delete_candidate_contract', function(){																													
-  if(window.confirm("Are You Sure to delete this data?")){  
-	  var $url= $(this).attr('data-url');	 
-	 $.ajax({	
-	   type: 'POST',	
-	   url: $url,	
-	   success: function(data){		   
-		   if(data.status == 'success')
-		   {	   			
-
-				get_present_contract('<?php echo $candidate_id;?>');
-			
-	   	   }
-		  
-	   }
-			
-	 }); 
-  }
-});
-
-$('#level_id').change(function() 
-	{	
-		jQuery('#course_id').html('');
-		jQuery('#course_id').append('<option value="">Select Course</option');
-			
-		if($('#level_id').val()=='')return;
-			$.ajax({
-			  type: 'POST',
-			  url: '<?php echo $this->config->site_url();?>/candidates_all/getcourses/',
-			  data: { level_study: $('#level_id').val()},
-			  dataType: 'json',
-			  
-			  beforeSend:function(){
-					jQuery('#course_id').html('');
-					jQuery('#course_id').append('<option value="">Loading...</option');
-			  },
-			  
-			  success:function(data){
-			  
-				  if(data.success==true)
-				  {
-					  jQuery('#course_id').html('');
-					  jQuery('#course_id').append(data.course_list);
-
-				 /* sorting start hrre */
-					var my_options = $("#course_id option");
-					var selected = $("#course_id").val(); /* preserving original selection, step 1 */
-					my_options.sort(function(a,b) {
-						if (a.text > b.text) return 1;
-						else if (a.text < b.text) return -1;
-						else return 0
-					})
-					$("#course_id").empty().append( my_options );
-					$("#course_id").val(selected); /* preserving original selection, step 2 */
-				  /* sorting end hrre */					 
-				  }else
-				  {
-					alert(data.success);
-				  }
-				},
-			  
-			  error:function(){
-					alert('Problem with server. Pelase try again');
-					jQuery('#course_id').html('');
-					jQuery('#course_id').append('<option value="">Select Course</option');
-			  }
-			});	
-	});
-
-$("#add_job_link").click(function ()
- {
-	$('html, body').animate({
-		scrollTop: $("#add_job_history").offset().top
-	}, 500);
-});
-
-$("#edit_mode_profession").click(function ()
-{
-		alert('You are editing Professional History Now, Please update it or cancel to add new one.');
-		$('html, body').animate({
-			scrollTop: $("#add_job_history").offset().top
-		}, 500);
-});   
-
-<?php if($edit_job_html!=''){?>
-	$('html, body').animate({
-		scrollTop: $("#add_job_history").offset().top
-	}, 500);
-<?php } ?>
-
-});
-
-// VAlidate Email ADDRESS	
-function email_validate() 
-{
-		if($('#subject').val()=='')
-		{
-			alert('Enter Subject');
-			$('#subject').focus();
-			return false;
-		} 
-		if($('#email_text').val()=='')
-		{
-			alert('Enter Subject');
-			$('#email_text').focus();
-			return false;
-		} 
-		return true;
-	}
-
-$(document).on('click', '#edit_edu', function()
-{ 
-	var $url= $(this).attr('data-url');	 
-	 $.ajax({	
-	   type: 'POST',	
-	   url: $url,
-	   dataType: "html",
-	   success: function (data) 
-	   {	
-			$('#data_holder').html(data);
-   	   }			
-	 }); 
-	$('#edit_education').modal('show');	
-});
-
-$(document).on('click', '#edit_job_profile', function()
-{ 
-	var $url= $(this).attr('data-url');	 
-	 $.ajax({	
-	   type: 'POST',	
-	   url: $url,
-	   dataType: "html",
-	   success: function (data) 
-	   {	
-			$('#job_data_holder').html(data);					
-   	   }			
-	 }); 
-	$('#edit_job_profile_modal').modal('show');	
-});
-
-function validate_profile_form()
-{
-	
-	if($('#first_name').val()=='')
-		{
-			alert('Enter Full Name');
-			$('#first_name').focus();
-			return false;
-		} 
-		
-
-	if($('#password').val()!='' && $('#c_password').val()=='')
-		{
-			alert('Confirm your password');
-			$('#c_password').focus();
-			return false;
-		} 
-
-	if($('#password').val()!='' && $('#c_password').val()!=$('#password').val())
-		{
-			alert('Please enter correct password');
-			$('#c_password').focus();
-			return false;
-		} 
-
-	if($('#mobile').val()=='')
-		{
-			alert('Enter Mobile');
-			$('#mobile').focus();
-			return false;
-		} 
-		
-						
-				
-	 if($('#driving_license_yes').is(':checked')) 
-	 { 
-	 	if($('#driving_license_country').val()=='')
-		{
-		 	alert("Please select country of Driving License issued"); 
-			return false;
-		}
-	 }
-	return true;
-}
-
-</script>

@@ -7,8 +7,56 @@ class Interviews extends CI_Controller {
 	  if(!isset($_SESSION['candidate_session']) || $_SESSION['candidate_session']=='')redirect('logout');
 	}
 	
-	
 	function index(){
+		$this->load->model('candidateallmodel');
+		$this->load->model('interview_model');
+		$candidate_id=$_SESSION['candidate_session'];
+		$this->data['detail_list'] = $this->candidateallmodel->detail_list($candidate_id);
+		$this->data["formdata"]  = $this->candidateallmodel->get_single_record($candidate_id);
+		$searchterm='';
+		$from_date='';
+		$to_date ='';
+		$start=0;
+		if(isset($_GET['limit'])){
+			if($_GET['limit']!='')
+			$limit= $_GET['limit'];
+		}else{
+		 	 $limit=50;
+		}
+		if($this->input->get('sort_by')!=''){
+			$sort_by=$this->input->get("sort_by");
+		}else{
+			$sort_by = 'asc';
+		}
+		if($this->input->get("rows")!=''){
+			$start=$this->input->get("rows");
+		}
+		if($this->input->get("rows")!=''){
+			$rows=$this->input->get("rows");
+		}
+		if(isset($_POST['searchterm'])){
+			if($_POST['searchterm']!='')
+			$searchterm= $_POST['searchterm'];
+		}
+		
+		if(isset($_POST['from_date'])){
+			if($_POST['from_date']!='')
+			$from_date= $_POST['from_date'];
+		}
+		
+		if(isset($_POST['to_date'])){
+			if($_POST['to_date']!='')
+			$to_date= $_POST['to_date'];
+		}
+		$this->data["records"] = $this->interview_model->get_list($start,$limit,$searchterm,$from_date,$to_date,$sort_by);
+		
+		$this->load->view("candidate-profile/header",$this->data);
+		$this->load->view("candidate-profile/include/sidebar",$this->data);
+		$this->load->view("candidate-profile/include/head",$this->data);
+		$this->load->view("candidate-profile/interview",$this->data);
+		$this->load->view("candidate-profile/footer",$this->data);		
+	}
+	function index1(){
 		$this->load->library('pagination');
 		$searchterm='';
 		$from_date='';
